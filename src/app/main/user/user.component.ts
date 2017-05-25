@@ -2,7 +2,10 @@
 import { DataService } from '../../core/services/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
+import { UploadService } from '../../core/services/upload.service';
+
 import { MessageContstants } from '../../core/common/message.constants';
+import { SystemConstants } from '../../core/common/system.constants';
 
 import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 declare var moment: any;
@@ -15,60 +18,18 @@ declare var moment: any;
 export class UserComponent implements OnInit {
 
     @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
-
+    @ViewChild('avatar') avatar;
     public myRoles: string[] = [];
-
     public pageIndex: number = 1;
-    public pageSize: number = 12;
+    public pageSize: number = 20;
     public pageDisplay: number = 10;
     public totalRow: number;
-    public filter: string = "";
+    public filter: string = '';
     public users: any[];
     public entity: any;
-
-
+    public baseFolder: string = SystemConstants.BASE_API;
     public allRoles: IMultiSelectOption[] = [];
-    public roles = [];
-    
-
-    constructor(private dataService: DataService, private notificationService: NotificationService) { }
-
-    ngOnInit() {
-        this.loadRoles();
-        this.loadData();
-    }
-
-    loadData(): void {
-        this.dataService.get('/api/appUser/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
-            .subscribe((response: any) => {
-                console.log(response)
-                this.users = response.Items;
-                this.pageIndex = response.PageIndex;
-                this.pageSize = response.PageSize;
-                this.totalRow = response.TotalRows;
-            })
-    }
-
-    loadRoles() {
-        this.dataService.get('/api/appRole/getlistall').subscribe((response: any[]) => {
-            this.allRoles = [];
-            for (let role of response) {
-                this.allRoles.push({ id: role.Name, name: role.Description });
-            }
-        }, error => this.dataService.handleError(error));
-    }
-
-    loadIdUser(id: any): void {
-        this.dataService.get('/api/appUser/detail/' + id).subscribe((response: any[]) => {
-            this.modalAddEdit.show();
-            this.entity = response;
-            console.log(this.entity)
-            for (let role of this.entity.Roles) {
-                this.myRoles.push(role);
-            }
-            this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
-        }, error => this.dataService.handleError(error));
-    }
+    public roles: any[];
 
     public dateOptions: any = {
         locale: { format: 'DD/MM/YYYY' },
@@ -76,45 +37,100 @@ export class UserComponent implements OnInit {
         singleDatePicker: true
     };
 
-    showAddModel(): void {
-        this.entity = {}
+    constructor(private _dataService: DataService,
+        private _notificationService: NotificationService, private _uploadService: UploadService) { }
+
+    ngOnInit() {
+        this.loadRoles();
+        this.loadData();
+    }
+
+    loadData() {
+        this._dataService.get('/api/appUser/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
+            .subscribe((response: any) => {
+                this.users = response.Items;
+                this.pageIndex = response.PageIndex;
+                this.pageSize = response.PageSize;
+                this.totalRow = response.TotalRows;
+            });
+    }
+    loadRoles() {
+        this._dataService.get('/api/appRole/getlistall').subscribe((response: any[]) => {
+            this.allRoles = [];
+            for (let role of response) {
+                this.allRoles.push({ id: role.Name, name: role.Description });
+            }
+        }, error => this._dataService.handleError(error));
+    }
+    loadUserDetail(id: any) {
+        this._dataService.get('/api/appUser/detail/' + id)
+            .subscribe((response: any) => {
+                this.entity = response;
+                this.myRoles = []
+                for (let role of this.entity.Roles) {
+                    this.myRoles.push(role);
+                }
+                this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
+            });
+    }
+    pageChanged(event: any): void {
+        this.pageIndex = event.page;
+        this.loadData();
+    }
+    showAddModal() {
+        this.entity = {};
         this.modalAddEdit.show();
     }
-
-    showEditModel(id: any): void {
-        this.loadIdUser(id);
+    showEditModal(id: any) {
+        this.loadUserDetail(id);
+        this.modalAddEdit.show();
     }
-
-    public selectGender(event) {
-        this.entity.Gender = event.target.value
-    }
-
     saveChange(valid: boolean) {
         if (valid) {
-            if (this.entity.id === undefined) {
-                this.dataService.post('/api/appUser/add', JSON.stringify(this.entity)).subscribe((response: any) => {
-                    this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
-                    this.loadData();
-                    this.modalAddEdit.hide();
-                }, error => this.dataService.handleError(error))
+            this.entity.Roles = this.myRoles;
+            let fi = this.avatar.nativeElement;
+            if (fi.files.length > 0) {
+                this._uploadService.postWithFile('/api/upload/saveImage', null, fi.files)
+                    .then((imageUrl: string) => {
+                        this.entity.Avatar = imageUrl;
+                    }).then(() => {
+                        this.saveData();
+                    });
             }
             else {
-                this.dataService.put('/api/appUser/update', JSON.stringify(this.entity)).subscribe((response: any) => {
-                    this.notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
-                    this.loadData();
-                    this.modalAddEdit.hide();
-                }, error => this.dataService.handleError(error))
+                this.saveData();
             }
         }
     }
-
-    deleteItem(id: any) {
-        this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemUserId(id));
+    private saveData() {
+        if (this.entity.Id == undefined) {
+            this._dataService.post('/api/appUser/add', JSON.stringify(this.entity))
+                .subscribe((response: any) => {
+                    this.loadData();
+                    this.modalAddEdit.hide();
+                    this._notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+                }, error => this._dataService.handleError(error));
+        }
+        else {
+            this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('MM/DD/YYYY');
+            this._dataService.put('/api/appUser/update', JSON.stringify(this.entity))
+                .subscribe((response: any) => {
+                    this.loadData();
+                    this.modalAddEdit.hide();
+                    this._notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+                }, error => this._dataService.handleError(error));
+        }
     }
-    deleteItemUserId(id: any) {
-        this.dataService.delete('/api/appUser/delete', 'id', id).subscribe((response: any) => {
+    deleteItem(id: any) {
+        this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemConfirm(id));
+    }
+    deleteItemConfirm(id: any) {
+        this._dataService.delete('/api/appUser/delete', 'id', id).subscribe((response: Response) => {
+            this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
             this.loadData();
-            this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG)
-        })
+        });
+    }
+    public selectGender(event) {
+        this.entity.Gender = event.target.value
     }
 }

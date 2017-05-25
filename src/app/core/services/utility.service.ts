@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { UrlConstants } from '../../core/common/url.constants';
@@ -20,9 +20,11 @@ export class UtilityService {
   navigate(path: string) {
     this._router.navigate([path]);
   }
+
   navigateToLogin() {
     this._router.navigate([UrlConstants.LOGIN]);
   }
+
   Unflatten = (arr: any[]): any[] => {
     let map = {};
     let roots: any[] = [];

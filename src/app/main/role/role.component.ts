@@ -23,7 +23,7 @@ export class RoleComponent implements OnInit {
 
     @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
 
-    constructor(private _dataService: DataService, private notificationService: NotificationService) { }
+    constructor(private _dataService: DataService, private _notificationService: NotificationService) { }
 
     ngOnInit() {
         this.loadData()
@@ -67,26 +67,26 @@ export class RoleComponent implements OnInit {
                 this._dataService.post('/api/appRole/add', JSON.stringify(this.entity)).subscribe((response: any) => {
                     this.loadData();
                     this.modalAddEdit.hide();
-                    this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+                    this._notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
                 }, error => this._dataService.handleError(error))
             }
             else {
                 this._dataService.put('/api/appRole/update', JSON.stringify(this.entity)).subscribe((response: any) => {
                     this.loadData();
                     this.modalAddEdit.hide();
-                    this.notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+                    this._notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
                 }, error => this._dataService.handleError(error))
             }
         }
     }
 
     deleteItem(id: any) {
-        this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemRole(id));
+        this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemRole(id));
     }
     deleteItemRole(id: any) {
         this._dataService.delete('/api/appRole/delete', 'id', id).subscribe((response: any) => {
             this.loadData();
-            this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG)
+            this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG)
         })
     }
 }
