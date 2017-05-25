@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../core/services/data.service'
 import { SystemConstants } from '../../core/common/system.constants'
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
-import { MessageContstants } from '../../core/common/message.constants'
+import { MessageContstants } from '../../core/common/message.constants';
+
 
 @Component({
     selector: 'app-role',
