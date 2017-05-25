@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../core/services/data.service'
 import { SystemConstants } from '../../core/common/system.constants'
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { NotificationService } from '../../core/services/notification.service';
+import { MessageContstants } from '../../core/common/message.constants'
 
 @Component({
     selector: 'app-role',
@@ -15,8 +18,11 @@ export class RoleComponent implements OnInit {
     public totalRow: number;
     public filter: string = "";
     public roles: any[];
+    public entity: any;
 
-    constructor(private _dataService: DataService) { }
+    @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
+
+    constructor(private _dataService: DataService, private notificationService: NotificationService) { }
 
     ngOnInit() {
         this.loadData()
@@ -32,9 +38,23 @@ export class RoleComponent implements OnInit {
             })
     }
 
-    pageChanged(event: any):void{
-      this.pageIndex = event.page;
-      this.loadData();
+    pageChanged(event: any): void {
+        this.pageIndex = event.page;
+        this.loadData();
     }
 
+    showAddModel(): void {
+        this.entity = {};
+        this.modalAddEdit.show();
+    }
+
+    saveChange(valid: boolean) {
+        if (valid) {
+            this._dataService.post('/api/appRole/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+                this.loadData();
+                this.modalAddEdit.hide();
+                this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+            }, error => this._dataService.handleError(error))
+        }
+    }
 }
