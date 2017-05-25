@@ -38,6 +38,13 @@ export class RoleComponent implements OnInit {
             })
     }
 
+    loadIdRole(id: any) {
+        this._dataService.get('/api/appRole/detail/' + id)
+            .subscribe((response: any) => {
+                this.entity = response;
+            })
+    }
+
     pageChanged(event: any): void {
         this.pageIndex = event.page;
         this.loadData();
@@ -48,13 +55,27 @@ export class RoleComponent implements OnInit {
         this.modalAddEdit.show();
     }
 
+    showEditModel(id: any): void {
+        this.loadIdRole(id);
+        this.modalAddEdit.show();
+    }
+
     saveChange(valid: boolean) {
         if (valid) {
-            this._dataService.post('/api/appRole/add', JSON.stringify(this.entity)).subscribe((response: any) => {
-                this.loadData();
-                this.modalAddEdit.hide();
-                this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
-            }, error => this._dataService.handleError(error))
+            if (this.entity.Id == undefined) {
+                this._dataService.post('/api/appRole/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+                    this.loadData();
+                    this.modalAddEdit.hide();
+                    this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+                }, error => this._dataService.handleError(error))
+            }
+            else {
+                this._dataService.put('/api/appRole/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+                    this.loadData();
+                    this.modalAddEdit.hide();
+                    this.notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+                }, error => this._dataService.handleError(error))
+            }
         }
     }
 }
