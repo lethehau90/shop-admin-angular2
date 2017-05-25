@@ -10,7 +10,7 @@ import { SystemConstants } from '../../core/common/system.constants'
 export class RoleComponent implements OnInit {
 
     public pageIndex: number = 1;
-    public pageSize: number = 1;
+    public pageSize: number = 12;
     public pageDisplay: number = 10;
     public totalRow: number;
     public filter: string = "";
