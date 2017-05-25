@@ -78,4 +78,14 @@ export class RoleComponent implements OnInit {
             }
         }
     }
+
+    deleteItem(id: any) {
+        this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemRole(id));
+    }
+    deleteItemRole(id: any) {
+        this._dataService.delete('/api/appRole/delete', 'id', id).subscribe((response: any) => {
+            this.loadData();
+            this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG)
+        })
+    }
 }
