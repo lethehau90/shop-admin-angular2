@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\main",
+    "\\src\\app\\main\\user"
   ],
-  "SelectedNode": "\\.angular-cli.json",
+  "SelectedNode": "\\src\\app\\main\\user\\user.component.html",
   "PreviewInSolutionExplorer": false
 }
