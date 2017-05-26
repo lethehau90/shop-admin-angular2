@@ -71,6 +71,7 @@ export class UserComponent implements OnInit {
                     this.myRoles.push(role);
                 }
                 this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
+                console.log(this.entity.BirthDay)
             });
     }
     pageChanged(event: any): void {

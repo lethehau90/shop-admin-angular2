@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TreeModule } from 'angular-tree-component';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap';
+
 const functionRoutes: Routes = [
     //localhost:4200/main/user
     { path: '', redirectTo: 'index', pathMatch: 'full' },

@@ -4,11 +4,9 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\core",
-    "\\src\\app\\core\\common",
     "\\src\\app\\main",
-    "\\src\\app\\main\\role",
     "\\src\\app\\main\\user"
   ],
-  "SelectedNode": "\\src\\app\\core\\common\\system.constants.ts",
+  "SelectedNode": "\\src\\app\\main\\user\\user.component.ts",
   "PreviewInSolutionExplorer": false
 }
