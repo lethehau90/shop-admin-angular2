@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+﻿import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
 
 export const mainRoutes: Routes = [
@@ -7,6 +7,7 @@ export const mainRoutes: Routes = [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'user', loadChildren: './user/user.module#UserModule' },
             { path: 'role', loadChildren: './role/role.module#RoleModule' },
+            { path: 'function', loadChildren: './function/function.module#FunctionModule' },
             { path: 'home', loadChildren: './home/home.module#HomeModule' }
         ]
     }

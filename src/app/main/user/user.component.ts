@@ -112,7 +112,6 @@ export class UserComponent implements OnInit {
                 }, error => this._dataService.handleError(error));
         }
         else {
-            this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('MM/DD/YYYY');
             this._dataService.put('/api/appUser/update', JSON.stringify(this.entity))
                 .subscribe((response: any) => {
                     this.loadData();
@@ -132,5 +131,10 @@ export class UserComponent implements OnInit {
     }
     public selectGender(event) {
         this.entity.Gender = event.target.value
+    }
+
+    public selectedDate(value: any) {
+        console.log(value)
+        this.entity.BirthDay = moment(value.end._d).format('DD/MM/YYYY');
     }
 }
