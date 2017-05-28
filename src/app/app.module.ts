@@ -6,11 +6,11 @@ import { RouterModule } from '@angular/router'
 
 import { AppComponent } from './app.component';
 import { appRouter } from './app.routes';
-import { AuthGuard } from './core/guards/auth.guard'
+import { AuthGuard } from './core/guards/auth.guard';
 
 @NgModule({
     declarations: [
-        AppComponent,
+        AppComponent
     ],
     imports: [
         BrowserModule,

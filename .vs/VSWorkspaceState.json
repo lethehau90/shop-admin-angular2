@@ -6,8 +6,11 @@
     "\\src\\app\\core",
     "\\src\\app\\core\\common",
     "\\src\\app\\main",
-    "\\src\\app\\main\\user"
+    "\\src\\app\\main\\role",
+    "\\src\\app\\shared",
+    "\\src\\app\\shared\\sidebar-menu",
+    "\\src\\app\\shared\\top-menu"
   ],
-  "SelectedNode": "\\src\\app\\core\\common\\system.constants.ts",
+  "SelectedNode": "\\src\\app\\main\\role\\role.component.ts",
   "PreviewInSolutionExplorer": false
 }

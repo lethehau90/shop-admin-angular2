@@ -60,8 +60,8 @@
                 <td><img [src]="baseFolder + user.Avatar" class="img-responsive" width="128" /></td>
                 <td>{{user.Status}}</td>
                 <td>
-                  <button *ngIf="_authenService.hasPermission('USER','Update')" class="btn btn-sm btn-primary" (click)="showEditModal(user.Id)"><i class="fa fa-pencil"></i></button>
-                  <button *ngIf="_authenService.hasPermission('USER','Delete')" class="btn btn-sm btn-danger" (click)="deleteItem(user.Id)"><i class="fa fa-trash-o"></i></button>
+                  <button *ngIf="_authenService.hasPermission('USER','update')" class="btn btn-sm btn-primary" (click)="showEditModal(user.Id)"><i class="fa fa-pencil"></i></button>
+                  <button *ngIf="_authenService.hasPermission('USER','delete')" class="btn btn-sm btn-danger" (click)="deleteItem(user.Id)"><i class="fa fa-trash-o"></i></button>
                 </td>
               </tr>
             </tbody>
