@@ -2,15 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app",
     "\\src\\app\\core",
     "\\src\\app\\core\\common",
     "\\src\\app\\main",
-    "\\src\\app\\main\\role",
-    "\\src\\app\\shared",
-    "\\src\\app\\shared\\sidebar-menu",
-    "\\src\\app\\shared\\top-menu"
+    "\\src\\app\\main\\product-category"
   ],
-  "SelectedNode": "\\src\\app\\main\\role\\role.component.ts",
+  "SelectedNode": "\\src\\typings.d.ts",
   "PreviewInSolutionExplorer": false
 }
