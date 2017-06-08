@@ -1,32 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { NotificationService } from '../core/services/notification.service';
-import { AuthenService } from '../core/services/authen.service';
-import { MessageContstants } from '../core/common/message.constants';
-import { Router } from '@angular/router';
-import { UrlConstants } from '../core/common/url.constants';
+import { Component } from '@angular/core';
+import { BaseComponent } from '../core/base/component.base';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BaseComponent {
   loading = false
   model: any = {};
   returnUrl: string
 
-  constructor(private authenService: AuthenService,
-    private notificationService: NotificationService, private router: Router) { }
+  constructor(private _baseComponent: BaseComponent) { 
+      super()
+    }
 
   ngOnInit() {
   }
 
   Login() {
     this.loading = true
-    this.authenService.login(this.model.username, this.model.password).subscribe(data => {
-      this.router.navigate([UrlConstants.HOME]);
+    this._authenService.login(this.model.username, this.model.password).subscribe(data => {
+      this._router.navigate([this._urlConstants.HOME]);
     }, error => {
-      this.notificationService.printErrorMessage(MessageContstants.SYSTEM_ERROR_MSG);
+      this._notificationService.printErrorMessage(this._messageContstants.SYSTEM_ERROR_MSG);
       this.loading = false;
     })
   }

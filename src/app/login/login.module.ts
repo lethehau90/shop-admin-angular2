@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login.component';
 import { Routes, RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms'
-import { AuthenService } from '../core/services/authen.service';
-import { NotificationService } from '../core/services/notification.service'
+//import { BaseComponent } from '../core/base/component.base';
+import { BaseModule } from '../core/base/component.module';
 
 const loginRouter: Routes = [
     { path: '', component: LoginComponent }
@@ -13,9 +13,9 @@ const loginRouter: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(loginRouter),
-        FormsModule
+        FormsModule,BaseModule
     ],
-    providers: [AuthenService, NotificationService],
+    //providers: [BaseComponent],
     declarations: [LoginComponent]
 })
 export class LoginModule { }

@@ -1,10 +1,11 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeComponent } from 'angular-tree-component';
-import { DataService } from '../../core/services/data.service';
 
+import { DataService } from '../../core/services/data.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { UtilityService } from '../../core/services/utility.service';
 import { MessageContstants } from '../../core/common/message.constants';
+
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
