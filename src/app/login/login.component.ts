@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '../core/base/component.base';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,7 +11,7 @@ export class LoginComponent extends BaseComponent {
   model: any = {};
   returnUrl: string
 
-  constructor(private _baseComponent: BaseComponent) { 
+  constructor() { 
       super()
     }
 

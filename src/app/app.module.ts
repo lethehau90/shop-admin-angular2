@@ -1,12 +1,21 @@
 ﻿import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router'
 
 import { AppComponent } from './app.component';
 import { appRouter } from './app.routes';
+
 import { AuthGuard } from './core/guards/auth.guard';
+import { InjectableObject } from "app/core/base/injectableobject.base";
+import { DataService } from "app/core/services/data.service";
+import { AuthenService } from "app/core/services/authen.service";
+import { NotificationService } from "app/core/services/notification.service";
+import { UploadService } from "app/core/services/upload.service";
+import { UtilityService } from "app/core/services/utility.service";
+import { LoginModule } from "app/login/login.module";
 
 @NgModule({
     declarations: [
@@ -14,11 +23,22 @@ import { AuthGuard } from './core/guards/auth.guard';
     ],
     imports: [
         BrowserModule,
-        FormsModule,
         HttpModule,
         RouterModule.forRoot(appRouter)
     ],
-    providers: [AuthGuard],
+    providers: [
+        AuthGuard,
+        DataService, 
+        AuthenService,
+        NotificationService,
+        UtilityService,
+        UploadService
+      ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(private _injecttor: Injector){
+        InjectableObject(_injecttor)
+    }
+
+ }

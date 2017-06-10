@@ -1,11 +1,9 @@
-import { ViewChild, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { OnDestroy, AfterContentInit, SimpleChanges } from '@angular/core/core';
 
 import { InjectableObject } from './injectableobject.base';
 import { Subscription } from "rxjs/Subscription";
 import { Router } from '@angular/router';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { TreeComponent } from 'angular-tree-component';
 
 import { DataService } from '../../core/services/data.service'
 import { AuthenService } from '../../core/services/authen.service';
@@ -37,13 +35,12 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _messageContstants: MessageContstants;
   public _urlConstants: UrlConstants;
 
-  public _modalDirective: ModalDirective;
 
   public _router: Router;
-  public _viewChild: ViewChild;
-  public _treeComponent: TreeComponent;
 
-  subscription: Subscription;
+
+  //subscription: Subscription;
+  
   constructor(private opt?: IBaseComponentOptions) {
     const _injector = InjectableObject();
 
@@ -53,25 +50,24 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
 
-    this._systemConstants = _injector.get(SystemConstants);
-    this._messageContstants = _injector.get(MessageContstants);
-    this._urlConstants = _injector.get(UrlConstants);
+    this._systemConstants = new SystemConstants();
+    this._messageContstants = new MessageContstants();
+    this._urlConstants = new UrlConstants();
 
-    this._modalDirective = _injector.get(ModalDirective);
     this._router = _injector.get(Router);
   }
 
   ngOnInit() {
-    console.log(`${(<any>this).constructor.name}: OnInit`);
-    this._componentName = (<any>this).constructor.name;
-
+    // console.log(`${(<any>this).constructor.name}: OnInit`);
+    // this._componentName = (<any>this).constructor.name;
+    console.log("start ngOninit");
   }
 
   ngOnDestroy() {
     // Called once, before the instance is destroyed.
     // Add 'implements OnDestroy' to the class.
     // console.log(`${(<any>this).constructor.name}: OnInit`);
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
