@@ -1,9 +1,6 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../../core/services/data.service'
-import { SystemConstants } from '../../core/common/system.constants'
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { NotificationService } from '../../core/services/notification.service';
-import { MessageContstants } from '../../core/common/message.constants';
+import { BaseComponent } from '../../core/base/component.base';
 
 
 @Component({
@@ -11,11 +8,11 @@ import { MessageContstants } from '../../core/common/message.constants';
     templateUrl: './role.component.html',
     styleUrls: ['./role.component.css']
 })
-export class RoleComponent implements OnInit {
+export class RoleComponent extends BaseComponent {
 
-    public pageIndex: number = 1;
-    public pageSize: number = 12;
-    public pageDisplay: number = 10;
+    public pageIndex: number = this._pageConstants.pageIndex;
+    public pageSize: number = this._pageConstants.pageSize;
+    public pageDisplay: number = this._pageConstants.pageDisplay;
     public totalRow: number;
     public filter: string = "";
     public roles: any[];
@@ -23,7 +20,7 @@ export class RoleComponent implements OnInit {
 
     @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
 
-    constructor(private _dataService: DataService, private _notificationService: NotificationService) { }
+    constructor() { super() }
 
     ngOnInit() {
         this.loadData()
@@ -67,26 +64,26 @@ export class RoleComponent implements OnInit {
                 this._dataService.post('/api/appRole/add', JSON.stringify(this.entity)).subscribe((response: any) => {
                     this.loadData();
                     this.modalAddEdit.hide();
-                    this._notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+                    this._notificationService.printSuccessMessage(this._messageContstants.CREATED_OK_MSG);
                 }, error => this._dataService.handleError(error))
             }
             else {
                 this._dataService.put('/api/appRole/update', JSON.stringify(this.entity)).subscribe((response: any) => {
                     this.loadData();
                     this.modalAddEdit.hide();
-                    this._notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+                    this._notificationService.printSuccessMessage(this._messageContstants.UPDATED_OK_MSG);
                 }, error => this._dataService.handleError(error))
             }
         }
     }
 
     deleteItem(id: any) {
-        this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemRole(id));
+        this._notificationService.printConfirmationDialog(this._messageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemRole(id));
     }
     deleteItemRole(id: any) {
         this._dataService.delete('/api/appRole/delete', 'id', id).subscribe((response: any) => {
             this.loadData();
-            this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG)
+            this._notificationService.printSuccessMessage(this._messageContstants.DELETED_OK_MSG)
         })
     }
 }

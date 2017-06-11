@@ -1,9 +1,6 @@
-﻿import { Component, ElementRef, OnInit } from '@angular/core';
-import { SystemConstants } from '../core/common/system.constants';
-import { UrlConstants } from '../core/common/url.constants';
-import { UtilityService } from '../core/services/utility.service';
-import { AuthenService } from '../core/services/authen.service';
+﻿import { Component } from '@angular/core';
 import { LoggedInUser } from '../core/domain/loggedin.user'
+import { BaseComponent } from '../core/base/component.base';
 
 @Component({
   selector: 'app-main',
@@ -11,19 +8,27 @@ import { LoggedInUser } from '../core/domain/loggedin.user'
   styleUrls: ['./main.component.css']
 })
 
-export class MainComponent implements OnInit {
+export class MainComponent extends BaseComponent {
   public user: LoggedInUser;
-  constructor(private utilityService: UtilityService, 
-  private authenService: AuthenService, private elementRef: ElementRef) { }
+  constructor() { super() }
 
+  public baseFolder: any;
   ngOnInit() {
-    $.getScript('../assets/js/custom.js');
+    
+    $(document).ready(() => {
+      setTimeout(function() {
+        $.getScript('../assets/js/custom.js');
+      }, 100);
+    });
 
-    this.user = this.authenService.getLoggedInUser();
+    this.baseFolder = this._systemConstants.BASE_API;
+    this.user = this._authenService.getLoggedInUser();
   }
 
   logout() {
-    localStorage.removeItem(SystemConstants.CURRENT_USER);
-    this.utilityService.navigate(UrlConstants.LOGIN);
+    localStorage.removeItem(this._systemConstants.CURRENT_USER);
+    this._utilityService.navigate(this._urlConstants.LOGIN);
   }
+
+
 }

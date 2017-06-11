@@ -1,31 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../../core/services/data.service';
-import { NotificationService } from '../../core/services/notification.service';
-import { UtilityService } from '../../core/services/utility.service';
-import { AuthenService } from '../../core/services/authen.service';
-
-import { MessageContstants } from '../../core/common/message.constants';
-import { SystemConstants } from '../../core/common/system.constants';
-import { UploadService } from '../../core/services/upload.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Router } from '@angular/router';
+import { BaseComponent } from '../../core/base/component.base';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent extends BaseComponent implements OnInit {
   /*Declare modal */
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
   @ViewChild("thumbnailImage") thumbnailImage;
+
   /*Product manage */
-  public baseFolder: string = SystemConstants.BASE_API;
+  public baseFolder: string = this._systemConstants.BASE_API;
   public entity: any;
   public totalRow: number;
-  public pageIndex: number = 1;
-  public pageSize: number = 20;
-  public pageDisplay: number = 10;
+  public pageIndex: number = this._pageConstants.pageIndex;
+  public pageSize: number = this._pageConstants.pageSize;
+  public pageDisplay: number = this._pageConstants.pageDisplay;
   public filterKeyword: string = '';
   public filterCategoryID: number;
   public products: any[];
@@ -39,36 +32,41 @@ export class ProductComponent implements OnInit {
   @ViewChild("imagePath") imagePath;
 
 
-  constructor(public _authenService: AuthenService,
-    private _dataService: DataService,
-    private notificationService: NotificationService,
-    private utilityService: UtilityService, private uploadService: UploadService) {
-  }
+  constructor(  ) { super()}
   ngOnInit() {
     this.search();
     this.loadProductCategories();
 
   }
+
   public createAlias() {
-    this.entity.Alias = this.utilityService.MakeSeoTitle(this.entity.Name);
+    this.entity.Alias = this._utilityService.MakeSeoTitle(this.entity.Name);
   }
+
   public search() {
     this._dataService.get('/api/product/getall?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&keyword=' + this.filterKeyword + '&categoryId=' + this.filterCategoryID)
       .subscribe((response: any) => {
         this.products = response.Items;
+
         this.pageIndex = response.PageIndex;
+        this.pageSize = response.PageSize;
+        this.totalRow = response.TotalRows;
+        
       }, error => this._dataService.handleError(error));
   }
+
   public reset() {
     this.filterKeyword = '';
     this.filterCategoryID = null;
     this.search();
   }
+
   //Show add form
   public showAdd() {
     this.entity = { Content: '' };
     this.addEditModal.show();
   }
+
   //Show edit form
   public showEdit(id: string) {
     this._dataService.get('/api/product/detail/' + id).subscribe((response: any) => {
@@ -78,9 +76,9 @@ export class ProductComponent implements OnInit {
   }
 
   public delete(id: string) {
-    this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => {
+    this._notificationService.printConfirmationDialog(this._messageContstants.CONFIRM_DELETE_MSG, () => {
       this._dataService.delete('/api/product/delete', 'id', id).subscribe((response: any) => {
-        this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+        this._notificationService.printSuccessMessage(this._messageContstants.DELETED_OK_MSG);
         this.search();
       }, error => this._dataService.handleError(error));
     });
@@ -91,12 +89,13 @@ export class ProductComponent implements OnInit {
       this.productCategories = response;
     }, error => this._dataService.handleError(error));
   }
+
   //Save change for modal popup
   public saveChanges(valid: boolean) {
     if (valid) {
       let fi = this.thumbnailImage.nativeElement;
       if (fi.files.length > 0) {
-        this.uploadService.postWithFile('/api/upload/saveImage?type=product', null, fi.files).then((imageUrl: string) => {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, fi.files).then((imageUrl: string) => {
           this.entity.ThumbnailImage = imageUrl;
         }).then(() => {
           this.saveData();
@@ -107,22 +106,24 @@ export class ProductComponent implements OnInit {
       }
     }
   }
+
   private saveData() {
     if (this.entity.ID == undefined) {
       this._dataService.post('/api/product/add', JSON.stringify(this.entity)).subscribe((response: any) => {
         this.search();
         this.addEditModal.hide();
-        this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+        this._notificationService.printSuccessMessage(this._messageContstants.CREATED_OK_MSG);
       });
     }
     else {
       this._dataService.put('/api/product/update', JSON.stringify(this.entity)).subscribe((response: any) => {
         this.search();
         this.addEditModal.hide();
-        this.notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+        this._notificationService.printSuccessMessage(this._messageContstants.UPDATED_OK_MSG);
       }, error => this._dataService.handleError(error));
     }
   }
+
   public pageChanged(event: any): void {
     this.pageIndex = event.page;
     this.search();
@@ -138,9 +139,9 @@ export class ProductComponent implements OnInit {
     for (var i = 0; i < this.checkedItems.length; ++i)
       checkedIds.push(this.checkedItems[i]["ID"]);
 
-    this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => {
+    this._notificationService.printConfirmationDialog(this._messageContstants.CONFIRM_DELETE_MSG, () => {
       this._dataService.delete('/api/product/deletemulti', 'checkedProducts', JSON.stringify(checkedIds)).subscribe((response: any) => {
-        this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+        this._notificationService.printSuccessMessage(this._messageContstants.DELETED_OK_MSG);
         this.search();
       }, error => this._dataService.handleError(error));
     });
@@ -160,10 +161,11 @@ export class ProductComponent implements OnInit {
       this.productImages = response;
     }, error => this._dataService.handleError(error));
   }
+  
   public deleteImage(id: number) {
-    this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => {
+    this._notificationService.printConfirmationDialog(this._messageContstants.CONFIRM_DELETE_MSG, () => {
       this._dataService.delete('/api/productImage/delete', 'id', id.toString()).subscribe((response: any) => {
-        this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+        this._notificationService.printSuccessMessage(this._messageContstants.DELETED_OK_MSG);
         this.loadProductImages(this.imageEntity.ProductId);
       }, error => this._dataService.handleError(error));
     });
@@ -173,11 +175,11 @@ export class ProductComponent implements OnInit {
     if (isValid) {
       let fi = this.imagePath.nativeElement;
       if (fi.files.length > 0) {
-        this.uploadService.postWithFile('/api/upload/saveImage?type=product', null, fi.files).then((imageUrl: string) => {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, fi.files).then((imageUrl: string) => {
           this.imageEntity.Path = imageUrl;
           this._dataService.post('/api/productImage/add', JSON.stringify(this.imageEntity)).subscribe((response: any) => {
             this.loadProductImages(this.imageEntity.ProductId);
-            this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+            this._notificationService.printSuccessMessage(this._messageContstants.CREATED_OK_MSG);
           });
         });
       }

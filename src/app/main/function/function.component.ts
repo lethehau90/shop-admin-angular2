@@ -1,11 +1,6 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { BaseComponent } from './../../core/base/component.base';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TreeComponent } from 'angular-tree-component';
-
-import { DataService } from '../../core/services/data.service';
-import { NotificationService } from '../../core/services/notification.service';
-import { UtilityService } from '../../core/services/utility.service';
-import { MessageContstants } from '../../core/common/message.constants';
-
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -13,12 +8,13 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
     templateUrl: './function.component.html',
     styleUrls: ['./function.component.css']
 })
-export class FunctionComponent implements OnInit {
+export class FunctionComponent extends BaseComponent  implements OnInit {
+
     @ViewChild('addEditModal') public addEditModal: ModalDirective;
     @ViewChild('permissionModal') public permissionModal: ModalDirective;
     @ViewChild(TreeComponent)
-    private treeFunction: TreeComponent;
 
+    private treeFunction: TreeComponent;
     public _functionHierachy: any[];
     public _functions: any[];
     public entity: any;
@@ -26,10 +22,8 @@ export class FunctionComponent implements OnInit {
     public filter: string = '';
     public _permission: any[];
     public functionId: string;
-
-    constructor(private _dataService: DataService,
-        private notificationService: NotificationService,
-        private utilityService: UtilityService) { }
+    
+    constructor() {  super() }
 
     ngOnInit() {
         this.search();
@@ -51,7 +45,7 @@ export class FunctionComponent implements OnInit {
                 FunctionId: this.functionId
             }
             this._dataService.post('/api/appRole/savePermission', JSON.stringify(data)).subscribe((response: any) => {
-                this.notificationService.printSuccessMessage(response);
+                this._notificationService.printSuccessMessage(response);
                 this.permissionModal.hide();
             }, error => this._dataService.handleError(error));
         }
@@ -68,7 +62,7 @@ export class FunctionComponent implements OnInit {
         this._dataService.get('/api/function/getall?filter=' + this.filter)
             .subscribe((response: any[]) => {
                 this._functions = response.filter(x => x.ParentId == null);
-                this._functionHierachy = this.utilityService.Unflatten(response);
+                this._functionHierachy = this._utilityService.Unflatten(response);
             }, error => this._dataService.handleError(error));
     }
 
@@ -79,16 +73,15 @@ export class FunctionComponent implements OnInit {
                 this._dataService.post('/api/function/add', JSON.stringify(this.entity)).subscribe((response: any) => {
                     this.search();
                     this.addEditModal.hide();
-                    this.notificationService.printSuccessMessage(MessageContstants.CREATED_OK_MSG);
+                    this._notificationService.printSuccessMessage(this._messageContstants.CREATED_OK_MSG);
                 }, error => this._dataService.handleError(error));
             }
             else {
                 this._dataService.put('/api/function/update', JSON.stringify(this.entity)).subscribe((response: any) => {
                     this.search();
                     this.addEditModal.hide();
-                    this.notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+                    this._notificationService.printSuccessMessage(this._messageContstants.UPDATED_OK_MSG);
                 }, error => this._dataService.handleError(error));
-
             }
         }
 
@@ -105,12 +98,12 @@ export class FunctionComponent implements OnInit {
     //Action delete
     public deleteConfirm(id: string): void {
         this._dataService.delete('/api/function/delete', 'id', id).subscribe((response: any) => {
-            this.notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
+            this._notificationService.printSuccessMessage(this._messageContstants.DELETED_OK_MSG);
             this.search();
         }, error => this._dataService.handleError(error));
     }
     //Click button delete turn on confirm
     public delete(id: string) {
-        this.notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteConfirm(id));
+        this._notificationService.printConfirmationDialog(this._messageContstants.CONFIRM_DELETE_MSG, () => this.deleteConfirm(id));
     }
 }

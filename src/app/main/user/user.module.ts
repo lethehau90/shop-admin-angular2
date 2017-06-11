@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../core/services/data.service';
-import { NotificationService } from '../../core/services/notification.service';
-import { UploadService } from '../../core/services/upload.service';
-import { AuthenService } from '../../core/services/authen.service';
-import { UtilityService } from '../../core/services/utility.service';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -28,7 +23,6 @@ const UserRouter: Routes = [
         MultiselectDropdownModule,
         Daterangepicker
     ],
-    declarations: [UserComponent],
-    providers: [DataService, NotificationService, UploadService, AuthenService, UtilityService]
+    declarations: [UserComponent]
 })
 export class UserModule { }

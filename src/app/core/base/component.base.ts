@@ -14,6 +14,7 @@ import { UploadService } from '../../core/services/upload.service';
 import { SystemConstants } from '../../core/common/system.constants'
 import { MessageContstants } from '../../core/common/message.constants';
 import { UrlConstants } from '../../core/common/url.constants';
+import { PageConstants } from "app/core/common/page.constants";
 
 
 interface IBaseComponentOptions {
@@ -34,10 +35,9 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _systemConstants: SystemConstants;
   public _messageContstants: MessageContstants;
   public _urlConstants: UrlConstants;
-
+  public _pageConstants: PageConstants;
 
   public _router: Router;
-
 
   //subscription: Subscription;
   
@@ -53,14 +53,15 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._systemConstants = new SystemConstants();
     this._messageContstants = new MessageContstants();
     this._urlConstants = new UrlConstants();
+    this._pageConstants = new PageConstants();
 
     this._router = _injector.get(Router);
   }
 
   ngOnInit() {
-    // console.log(`${(<any>this).constructor.name}: OnInit`);
-    // this._componentName = (<any>this).constructor.name;
-    console.log("start ngOninit");
+    console.log(`${(<any>this).constructor.name}: OnInit`);
+    this._componentName = (<any>this).constructor.name;
+    console.log("start ngOninit"+ this._componentName );
   }
 
   ngOnDestroy() {
