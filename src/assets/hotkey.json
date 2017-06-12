@@ -1,0 +1,7 @@
+{
+  "hotkeys": {
+    "alt+1": ["ProductComponent.open"],
+    "alt+2": ["ProductCategoryComponent.open"],
+    "alt+n" :["showAdd"]
+  }
+}   
