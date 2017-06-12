@@ -17,6 +17,10 @@ import { AuthenService } from "app/core/services/authen.service";
 import { NotificationService } from "app/core/services/notification.service";
 import { UploadService } from "app/core/services/upload.service";
 import { UtilityService } from "app/core/services/utility.service";
+import { ShortcutService } from "app/core/services/hotkey.service";
+
+import { HotkeyModule } from "angular2-hotkeys";
+import 'rxjs/add/operator/toPromise';
 
 @NgModule({
     declarations: [
@@ -25,7 +29,8 @@ import { UtilityService } from "app/core/services/utility.service";
     imports: [
         BrowserModule,
         HttpModule,
-        RouterModule.forRoot(appRouter)
+        RouterModule.forRoot(appRouter),
+        HotkeyModule.forRoot()
     ],
     providers: [
         AuthGuard,
@@ -33,7 +38,8 @@ import { UtilityService } from "app/core/services/utility.service";
         AuthenService,
         NotificationService,
         UtilityService,
-        UploadService
+        UploadService,
+        ShortcutService
       ],
     bootstrap: [AppComponent]
 })
