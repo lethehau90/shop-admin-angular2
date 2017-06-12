@@ -32,15 +32,15 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _utilityService: UtilityService;
   public _uploadService: UploadService;
 
-  public _systemConstants: SystemConstants;
-  public _messageContstants: MessageContstants;
-  public _urlConstants: UrlConstants;
-  public _pageConstants: PageConstants;
+  public _systemConstants: any;
+  public _messageContstants: any;
+  public _urlConstants: any;
+  public _pageConstants: any;
 
   public _router: Router;
 
   //subscription: Subscription;
-  
+
   constructor(private opt?: IBaseComponentOptions) {
     const _injector = InjectableObject();
 
@@ -50,10 +50,11 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
 
-    this._systemConstants = new SystemConstants();
-    this._messageContstants = new MessageContstants();
-    this._urlConstants = new UrlConstants();
-    this._pageConstants = new PageConstants();
+    this._systemConstants = new SystemConstants;
+
+    this._messageContstants = MessageContstants;
+    this._urlConstants = UrlConstants;
+    this._pageConstants = PageConstants;
 
     this._router = _injector.get(Router);
   }
@@ -61,7 +62,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   ngOnInit() {
     console.log(`${(<any>this).constructor.name}: OnInit`);
     this._componentName = (<any>this).constructor.name;
-    console.log("start ngOninit"+ this._componentName );
+    console.log("start ngOninit: " + this._componentName);
   }
 
   ngOnDestroy() {
