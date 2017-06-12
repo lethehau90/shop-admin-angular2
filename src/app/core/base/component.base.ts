@@ -50,8 +50,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
 
-    this._systemConstants = new SystemConstants;
-
+    this._systemConstants = SystemConstants;
     this._messageContstants = MessageContstants;
     this._urlConstants = UrlConstants;
     this._pageConstants = PageConstants;
