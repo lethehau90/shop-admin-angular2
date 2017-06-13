@@ -4,6 +4,7 @@ import { OnDestroy, AfterContentInit, SimpleChanges } from '@angular/core/core';
 import { InjectableObject } from './injectableobject.base';
 import { Subscription } from "rxjs/Subscription";
 import { Router } from '@angular/router';
+import * as _ from "lodash";
 
 import { DataService } from '../../core/services/data.service'
 import { AuthenService } from '../../core/services/authen.service';
@@ -11,10 +12,14 @@ import { NotificationService } from '../../core/services/notification.service';
 import { UtilityService } from '../../core/services/utility.service';
 import { UploadService } from '../../core/services/upload.service';
 
+import { ShortcutService, Command } from "app/core/services/hotkey.service";
+
 import { SystemConstants } from '../../core/common/system.constants'
 import { MessageContstants } from '../../core/common/message.constants';
 import { UrlConstants } from '../../core/common/url.constants';
 import { PageConstants } from "app/core/common/page.constants";
+
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 
 
 interface IBaseComponentOptions {
@@ -32,14 +37,18 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _utilityService: UtilityService;
   public _uploadService: UploadService;
 
+  public _shortcutService: ShortcutService;
+
+
   public _systemConstants: any;
   public _messageContstants: any;
   public _urlConstants: any;
   public _pageConstants: any;
 
   public _router: Router;
+  public _cacheService: CacheService
 
-  //subscription: Subscription;
+  subscription: Subscription;
 
   constructor(private opt?: IBaseComponentOptions) {
     const _injector = InjectableObject();
@@ -49,6 +58,9 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._authenService = _injector.get(AuthenService);
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
+    this._shortcutService = _injector.get(ShortcutService);
+    
+    this._cacheService = _injector.get(CacheService);
 
     this._systemConstants = SystemConstants;
     this._messageContstants = MessageContstants;
@@ -56,19 +68,35 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._pageConstants = PageConstants;
 
     this._router = _injector.get(Router);
+
+    this.subscription = this._shortcutService.commands.subscribe(this.handleCommand);
+    //this.subscription = this._shortcutService.commands.subscribe(c => this.handleCommand(c));
   }
 
   ngOnInit() {
     console.log(`${(<any>this).constructor.name}: OnInit`);
     this._componentName = (<any>this).constructor.name;
     console.log("start ngOninit: " + this._componentName);
+
+    console.log(this.opt)
   }
 
   ngOnDestroy() {
-    // Called once, before the instance is destroyed.
-    // Add 'implements OnDestroy' to the class.
-    // console.log(`${(<any>this).constructor.name}: OnInit`);
-    //this.subscription.unsubscribe();
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    console.log(`${(<any>this).constructor.name}: OnInit`);
+    console.log("ngOnDestroy")
+    this.subscription.unsubscribe();
+  }
+
+  handleCommand = (command: Command) => {
+    switch (command.name) {
+      case 'ProductComponent.open': this._router.navigate(['/main/product/index']); break;
+      case 'ProductCategoryComponent.open': this._router.navigate(['/main/product-category/index']); break;
+    }
+
+    if (!_.isUndefined(this[command.name]) && _.isFunction(this[command.name]))
+      this[command.name].call(this);
   }
 
   ngOnChanges(changes: SimpleChanges) {
