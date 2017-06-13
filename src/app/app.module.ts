@@ -18,6 +18,7 @@ import { NotificationService } from "app/core/services/notification.service";
 import { UploadService } from "app/core/services/upload.service";
 import { UtilityService } from "app/core/services/utility.service";
 import { ShortcutService } from "app/core/services/hotkey.service";
+import { CachingService } from './core/services/caching.service';
 
 import { HotkeyModule } from "angular2-hotkeys";
 import 'rxjs/add/operator/toPromise';
@@ -39,7 +40,7 @@ import 'rxjs/add/operator/toPromise';
         NotificationService,
         UtilityService,
         UploadService,
-        ShortcutService
+        CachingService
       ],
     bootstrap: [AppComponent]
 })
