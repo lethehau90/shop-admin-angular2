@@ -17,6 +17,7 @@ import { SystemConstants } from '../../core/common/system.constants'
 import { MessageContstants } from '../../core/common/message.constants';
 import { UrlConstants } from '../../core/common/url.constants';
 import { PageConstants } from "app/core/common/page.constants";
+import { CachingService } from '../services/caching.service';
 
 
 interface IBaseComponentOptions {
@@ -34,6 +35,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _utilityService: UtilityService;
   public _uploadService: UploadService;
   public _shortcutService: ShortcutService
+  public _cachingService: CachingService
 
   public _systemConstants: any;
   public _messageContstants: any;
@@ -53,6 +55,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
     this._shortcutService = _injector.get(ShortcutService);
+    this._cachingService =_injector.get(CachingService);
 
     this._systemConstants = SystemConstants;
     this._messageContstants = MessageContstants;
@@ -62,7 +65,6 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._router = _injector.get(Router);
 
     this.subscription = this._shortcutService.commands.subscribe(this.handleCommand);
-    //this.subscription = this._shortcutService.commands.subscribe(c => this.handleCommand(c));
   }
 
   ngOnInit() {
