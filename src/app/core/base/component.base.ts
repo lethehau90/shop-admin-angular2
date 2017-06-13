@@ -10,6 +10,8 @@ import { AuthenService } from '../../core/services/authen.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { UtilityService } from '../../core/services/utility.service';
 import { UploadService } from '../../core/services/upload.service';
+import { ShortcutService } from "app/core/services/hotkey.service";
+
 
 import { SystemConstants } from '../../core/common/system.constants'
 import { MessageContstants } from '../../core/common/message.constants';
@@ -31,6 +33,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _notificationService: NotificationService;
   public _utilityService: UtilityService;
   public _uploadService: UploadService;
+  public _shortcutService: ShortcutService
 
   public _systemConstants: any;
   public _messageContstants: any;
@@ -49,6 +52,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._authenService = _injector.get(AuthenService);
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
+    this._shortcutService = _injector.get(ShortcutService);
 
     this._systemConstants = SystemConstants;
     this._messageContstants = MessageContstants;
