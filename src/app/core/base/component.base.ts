@@ -11,17 +11,12 @@ import { AuthenService } from '../../core/services/authen.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { UtilityService } from '../../core/services/utility.service';
 import { UploadService } from '../../core/services/upload.service';
-import { ShortcutService } from "app/core/services/hotkey.service";
-
-
 import { ShortcutService, Command } from "app/core/services/hotkey.service";
 
 import { SystemConstants } from '../../core/common/system.constants'
 import { MessageContstants } from '../../core/common/message.constants';
 import { UrlConstants } from '../../core/common/url.constants';
 import { PageConstants } from "app/core/common/page.constants";
-
-import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 
 
 interface IBaseComponentOptions {
@@ -40,16 +35,12 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _uploadService: UploadService;
   public _shortcutService: ShortcutService
 
-  public _shortcutService: ShortcutService;
-
-
   public _systemConstants: any;
   public _messageContstants: any;
   public _urlConstants: any;
   public _pageConstants: any;
 
   public _router: Router;
-  public _cacheService: CacheService
 
   subscription: Subscription;
 
@@ -62,11 +53,6 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
     this._shortcutService = _injector.get(ShortcutService);
-<<<<<<< HEAD
-=======
-    
-    this._cacheService = _injector.get(CacheService);
->>>>>>> 23ba616fc187c3c6332120eafc20595479b892ca
 
     this._systemConstants = SystemConstants;
     this._messageContstants = MessageContstants;
