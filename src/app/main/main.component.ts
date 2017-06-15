@@ -15,11 +15,9 @@ export class MainComponent extends BaseComponent {
   public baseFolder: any;
   ngOnInit() {
     
-    $(document).ready(() => {
       setTimeout(function() {
         $.getScript('../assets/js/custom.js');
-      }, 100);
-    });
+      }, 500);
 
     this.baseFolder = this._systemConstants.BASE_API;
     this.user = this._authenService.getLoggedInUser();

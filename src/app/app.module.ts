@@ -40,7 +40,8 @@ import 'rxjs/add/operator/toPromise';
         NotificationService,
         UtilityService,
         UploadService,
-        CachingService
+        CachingService,
+        ShortcutService
       ],
     bootstrap: [AppComponent]
 })
