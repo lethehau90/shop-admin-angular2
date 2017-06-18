@@ -1,8 +1,8 @@
 ﻿import { Component, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-
 import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 import { BaseComponent } from '../../core/base/component.base';
+import { NgForm } from "@angular/forms/src/forms";
 declare var moment: any;
 
 @Component({
@@ -89,8 +89,8 @@ export class UserComponent  extends BaseComponent {
     this.modalAddEdit.show();
   }
 
-  saveChange(valid: boolean) {
-    if (valid) {
+  saveChange(form : NgForm) {
+    if (form.valid) {
       this.entity.Roles = this.myRoles;
       let fi = this.avatar.nativeElement;
       if (fi.files.length > 0) {
@@ -98,21 +98,22 @@ export class UserComponent  extends BaseComponent {
           .then((imageUrl: string) => {
             this.entity.Avatar = imageUrl;
           }).then(() => {
-            this.saveData();
+            this.saveData(form);
           });
       }
       else {
-        this.saveData();
+        this.saveData(form);
       }
     }
   }
 
-  private saveData() {
+  private saveData(form: NgForm) {
     if (this.entity.Id == undefined) {
       this._dataService.post('/api/appUser/add', JSON.stringify(this.entity))
         .subscribe((response: any) => {
           this.loadData();
           this.modalAddEdit.hide();
+          form.resetForm();
           this._notificationService.printSuccessMessage(this._messageContstants.CREATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -121,6 +122,7 @@ export class UserComponent  extends BaseComponent {
         .subscribe((response: any) => {
           this.loadData();
           this.modalAddEdit.hide();
+          form.resetForm();
           this._notificationService.printSuccessMessage(this._messageContstants.UPDATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }

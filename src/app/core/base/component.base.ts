@@ -3,7 +3,7 @@ import { OnDestroy, AfterContentInit, SimpleChanges } from '@angular/core/core';
 
 import { InjectableObject } from './injectableobject.base';
 import { Subscription } from "rxjs/Subscription";
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from "lodash";
 
 import { DataService } from '../../core/services/data.service'
@@ -18,6 +18,7 @@ import { MessageContstants } from '../../core/common/message.constants';
 import { UrlConstants } from '../../core/common/url.constants';
 import { PageConstants } from "app/core/common/page.constants";
 import { CachingService } from '../services/caching.service';
+import { SignalrService } from './../services/signalr.service';
 
 
 interface IBaseComponentOptions {
@@ -36,6 +37,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _uploadService: UploadService;
   public _shortcutService: ShortcutService
   public _cachingService: CachingService
+  public _signalrService: SignalrService
 
   public _systemConstants: any;
   public _messageContstants: any;
@@ -43,6 +45,7 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _pageConstants: any;
 
   public _router: Router;
+  public _activatedRoute: ActivatedRoute
 
   subscription: Subscription;
 
@@ -55,7 +58,8 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._utilityService = _injector.get(UtilityService);
     this._uploadService = _injector.get(UploadService);
     this._shortcutService = _injector.get(ShortcutService);
-    this._cachingService =_injector.get(CachingService);
+    this._cachingService = _injector.get(CachingService);
+    this._signalrService = _injector.get(SignalrService);
 
     this._systemConstants = SystemConstants;
     this._messageContstants = MessageContstants;
@@ -63,6 +67,8 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
     this._pageConstants = PageConstants;
 
     this._router = _injector.get(Router);
+    this._activatedRoute = _injector.get(ActivatedRoute);
+
 
     this.subscription = this._shortcutService.commands.subscribe(this.handleCommand);
   }
