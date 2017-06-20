@@ -51,6 +51,11 @@ export class TopMenuComponent extends BaseComponent implements OnInit {
     });
   }
 
+  logout() {
+    localStorage.removeItem(this._systemConstants.CURRENT_USER);
+    this._utilityService.navigate(this._urlConstants.LOGIN);
+  }
+
   private loadAnnouncements() {
     this._dataService.get('/api/Announcement/getTopMyAnnouncement').subscribe((response: any) => {
       this.announcements = [];

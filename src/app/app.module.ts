@@ -29,12 +29,12 @@ import 'rxjs/add/operator/toPromise';
     imports: [
         BrowserModule,
         HttpModule,
-        RouterModule.forRoot(appRouter),
+        RouterModule.forRoot(appRouter, { useHash: true }),
         HotkeyModule.forRoot()
     ],
     providers: [
         AuthGuard,
-        DataService, 
+        DataService,
         AuthenService,
         NotificationService,
         UtilityService,
@@ -42,12 +42,12 @@ import 'rxjs/add/operator/toPromise';
         CachingService,
         ShortcutService,
         SignalrService
-      ],
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
-    constructor(private _injecttor: Injector){
+    constructor(private _injecttor: Injector) {
         InjectableObject(_injecttor)
     }
 
- }
+}
