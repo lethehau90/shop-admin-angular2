@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
     ngOnInit() {
-        $(document).ready(function () {
-            $.getScript('../assets/js/custom.js');
-        });
+        
     }
 
     constructor() {

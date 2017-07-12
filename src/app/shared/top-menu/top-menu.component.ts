@@ -60,7 +60,7 @@ export class TopMenuComponent extends BaseComponent implements OnInit {
     this._dataService.get('/api/Announcement/getTopMyAnnouncement').subscribe((response: any) => {
       this.announcements = [];
       for (let item of response) {
-        item.CreatedDate = moment().format("YYYYMMDD").fromNow();
+        item.CreatedDate =  moment(moment().format("YYYYMMDD"), "YYYYMMDD").fromNow();
         this.announcements.push(item);
       }
     });

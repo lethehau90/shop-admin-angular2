@@ -2,11 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
+    "\\src\\app",
     "\\src\\app\\core",
-    "\\src\\app\\core\\common",
+    "\\src\\app\\core\\services",
     "\\src\\app\\main",
     "\\src\\app\\main\\product-category"
   ],
-  "SelectedNode": "\\src\\typings.d.ts",
+  "SelectedNode": "\\src\\app\\core\\services\\hotkey.service.ts",
   "PreviewInSolutionExplorer": false
 }
