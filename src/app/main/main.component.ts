@@ -15,8 +15,8 @@ export class MainComponent extends BaseComponent {
   public baseFolder: any;
   ngOnInit() {
 
-    setTimeout(function () {
-      $(document).ready(function () {
+    setTimeout(() => {
+      $(document).ready(() => {
         $.getScript('../assets/js/custom.js');
       });
     }, 0);

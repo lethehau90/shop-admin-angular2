@@ -10,7 +10,7 @@ declare var moment: any;
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent  extends BaseComponent {
+export class UserComponent extends BaseComponent {
 
   @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
   @ViewChild('avatar') avatar;
@@ -89,12 +89,12 @@ export class UserComponent  extends BaseComponent {
     this.modalAddEdit.show();
   }
 
-  saveChange(form : NgForm) {
+  saveChange(form: NgForm) {
     if (form.valid) {
       this.entity.Roles = this.myRoles;
       let fi = this.avatar.nativeElement;
       if (fi.files.length > 0) {
-         this._uploadService.postWithFile('/api/upload/saveImage?type=avatar', null, fi.files)
+        this._uploadService.postWithFile('/api/upload/saveImage?type=avatar', null, fi.files)
           .then((imageUrl: string) => {
             this.entity.Avatar = imageUrl;
           }).then(() => {
@@ -138,7 +138,7 @@ export class UserComponent  extends BaseComponent {
       this.loadData();
     });
   }
-  
+
   public selectGender(event) {
     this.entity.Gender = event.target.value
   }
