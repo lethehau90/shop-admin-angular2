@@ -4,10 +4,10 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\core",
-    "\\src\\app\\core\\services",
     "\\src\\app\\main",
-    "\\src\\app\\main\\product-category"
+    "\\src\\app\\main\\product",
+    "\\src\\app\\shared\\sidebar-menu"
   ],
-  "SelectedNode": "\\src\\app\\core\\services\\hotkey.service.ts",
+  "SelectedNode": "\\src\\app\\main\\product\\product.component.ts",
   "PreviewInSolutionExplorer": false
 }

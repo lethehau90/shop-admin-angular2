@@ -35,9 +35,9 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   public _notificationService: NotificationService;
   public _utilityService: UtilityService;
   public _uploadService: UploadService;
-  public _shortcutService: ShortcutService
-  public _cachingService: CachingService
-  public _signalrService: SignalrService
+  public _shortcutService: ShortcutService;
+  public _cachingService: CachingService;
+  public _signalrService: SignalrService;
 
   public _systemConstants: any;
   public _messageContstants: any;
@@ -68,7 +68,6 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
 
     this._router = _injector.get(Router);
     this._activatedRoute = _injector.get(ActivatedRoute);
-
 
     this.subscription = this._shortcutService.commands.subscribe(this.handleCommand);
   }
