@@ -1,4 +1,5 @@
 import { Component,AfterViewChecked, OnInit, ElementRef  } from '@angular/core';
+import { debug } from 'util';
 
 @Component({
     selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent implements AfterViewChecked ,OnInit {
     {
         var existsScript = document.getElementById("customJS");
         if (existsScript != null) {
-        this.elementRef.nativeElement.removeChild(existsScript);
+        //this.elementRef.nativeElement.removeChild(existsScript);
         }
         else {
             var s = document.createElement("script");

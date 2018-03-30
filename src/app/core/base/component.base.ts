@@ -84,8 +84,8 @@ export class BaseComponent implements OnInit, OnDestroy, AfterContentInit {
   ngOnDestroy() {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    console.log(`${(<any>this).constructor.name}: OnInit`);
-    console.log("ngOnDestroy")
+    //console.log(`${(<any>this).constructor.name}: OnInit`);
+    console.log("ngOnDestroy: " + `${(<any>this).constructor.name}` )
     this.subscription.unsubscribe();
   }
 
