@@ -51,6 +51,7 @@ export class UserComponent extends BaseComponent {
         this.pageIndex = response.PageIndex;
         this.pageSize = response.PageSize;
         this.totalRow = response.TotalRows;
+        this._cachingService.localStorage.store("UserTestCache",response);
       });
   }
 
