@@ -119,7 +119,6 @@ class CookieStorageCore implements ICacher {
       key = encodeURIComponent(key);
       let regexp = new RegExp('(?:^' + key + '|;\\s*' + key + ')=(.*?)(?:;|$)', 'g');
       let result = regexp.exec(this.cookies);
-      debugger
       const model = JSON.parse(decodeURIComponent(result[1]));
       return model as TModel;
     } else {
